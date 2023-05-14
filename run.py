@@ -2,8 +2,31 @@
 
 """
 from fastapi import FastAPI
+from fastapi.openapi.utils import get_openapi
+
 
 app = FastAPI()
+
+
+def custom_openapi():
+    """Customize OpenAPI schema"""
+    if app.openapi_schema:
+        return app.openapi_schema
+    openapi_schema = get_openapi(
+        title="Backend_GRUPO2",
+        version="1.0.0",
+        description="Documentação Swagger grupo - 2",
+        routes=app.routes,
+    )
+    openapi_schema["info"]["x-logo"] = {
+        "url": "https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png"
+    }
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+
+app.openapi = custom_openapi
+
 
 @app.get("/")
 async def root():
@@ -114,7 +137,6 @@ async def get_students():
 async def get_student(student_id: int):
     """ Recupera um aluno pelo seu id"""
     return {"message": f"Student {student_id} retrieved successfully"}
-
 
 if __name__ == "__main__":
     import uvicorn
