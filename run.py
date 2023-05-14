@@ -3,9 +3,26 @@
 """
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
+from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI()
+
+
+origins = [
+    "http://localhost.grupo2.com",
+    "https://localhost.grupo2.com",
+    "http://localhost",
+    "http://localhost:8080",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def custom_openapi():
@@ -23,7 +40,6 @@ def custom_openapi():
     }
     app.openapi_schema = openapi_schema
     return app.openapi_schema
-
 
 app.openapi = custom_openapi
 
