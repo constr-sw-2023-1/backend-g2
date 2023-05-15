@@ -5,5 +5,4 @@ from tortoise.models import Model
 class Subject(Model):
     uuid = fields.UUIDField(pk=True)
     name = fields.TextField()
-    type = fields.TextField()
     lesson = fields.ForeignKeyField('models.Lesson', related_name='contents')
