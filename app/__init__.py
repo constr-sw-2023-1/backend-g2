@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from . import dependencies, routes
-from .settings import Settings
+from ..settings import Settings
 
 def create_app() -> FastAPI:
     app = FastAPI()

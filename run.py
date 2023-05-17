@@ -11,9 +11,15 @@
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
+import routes
+from .settings import Settings
+
 
 
 app = FastAPI()
+
+settings = Settings()
+app = routes.init_app(app)
 
 
 origins = [
