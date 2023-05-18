@@ -11,16 +11,13 @@
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
-import routes
-from .settings import Settings
-
+from app.routes import init_app
 
 
 app = FastAPI()
 
-settings = Settings()
-app = routes.init_app(app)
 
+init_app(app)
 
 origins = [
     "http://localhost.grupo2.com",
@@ -36,7 +33,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 def custom_openapi():
     """Customize OpenAPI schema"""
@@ -55,7 +51,6 @@ def custom_openapi():
     return app.openapi_schema
 
 app.openapi = custom_openapi
-
 
 @app.get("/")
 async def root():

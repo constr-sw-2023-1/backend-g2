@@ -1,13 +1,11 @@
 from fastapi import FastAPI
 
-from . import dependencies, routes
-from ..settings import Settings
+from . import dependencies, routes, models
+
 
 def create_app() -> FastAPI:
     app = FastAPI()
-
-    settings = Settings()
-    dependencies.init_app(app, settings)
+    models.init()
     routes.init_app(app)
 
     return app
