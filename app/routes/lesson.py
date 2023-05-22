@@ -1,17 +1,18 @@
+import asyncio
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
 from fastapi.responses import StreamingResponse
+from pydantic import BaseModel
 from app.models.lesson import Lesson
+from ..controllers import lesson as lesson_controller
 
 router = APIRouter(prefix="/lesson", tags=["Lesson"])
 
-@router.post("/")
-async def create_lesson():
-    """_summary_
 
-    Returns:
-        _type_: _description_
-    """
-    return {"message": "Lesson created successfully"}
+@router.post("/", status_code=201)
+async def create_lesson(lesson: Lesson) -> Lesson:
+    print("ROUTER LESSON----------------------------------")
+    print(lesson)
+    return lesson_controller.create_lesson(lesson)
 
 @router.delete("/{lesson_id}")
 async def delete_lesson(lesson_id: int):
@@ -31,7 +32,7 @@ async def pacial_update_lesson(lesson_id: int):
 @router.get("/")
 async def get_lessons():
     """Recupera todas as aulas"""
-    return {"message": "Lessons retrieved successfully"}
+    return get_all_lessons()
 
 @router.get("/{lesson_id}")
 async def get_lesson(lesson_id: int):

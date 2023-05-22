@@ -7,7 +7,7 @@ router = APIRouter(prefix="/lessons/subject/type", tags=["Type"])
 
 @router.post("/")
 async def create_type():
-    """ Cria um novo aluno"""
+    """Cria um novo aluno"""
     return {"message": "type created successfully"}
 
 @router.delete("/{type_id}")
@@ -17,7 +17,7 @@ async def delete_type(type_id: int):
 
 @router.put("/{type_id}")
 async def update_type(type_id: int):
-    """'Atualiza um aluno"""
+    """Atualiza um aluno"""
     return {"message": f"type {type_id} updated successfully"}
 
 @router.patch("/{type_id}")

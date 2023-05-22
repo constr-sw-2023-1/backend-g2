@@ -23,12 +23,16 @@ init_app(app)
 async def startup_event():
     from migrate import init_db
     await init_db()
+    # from migrate import populate
+    # await populate()
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
     from migrate import close_db
     await close_db()
+
+arbitrary_types_allowed = True
 
 origins = [
     "http://localhost.grupo2.com",

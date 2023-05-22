@@ -22,4 +22,3 @@ async def close_db():
 async def populate():
     """This function is used to populate the database
     """
-    
