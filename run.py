@@ -12,12 +12,23 @@ from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes import init_app
+from tortoise.contrib.fastapi import register_tortoise
 
 
 app = FastAPI()
 
-
 init_app(app)
+
+@app.on_event("startup")
+async def startup_event():
+    from migrate import init_db
+    await init_db()
+
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    from migrate import close_db
+    await close_db()
 
 origins = [
     "http://localhost.grupo2.com",
