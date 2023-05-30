@@ -1,10 +1,11 @@
-import pydantic
 from tortoise import fields
+from tortoise.contrib.pydantic import pydantic_model_creator
 from tortoise.models import Model
 
-@pydantic.dataclasses.dataclass
 class Lesson(Model):
     uuid = fields.UUIDField(pk=True)
     datetime = fields.DatetimeField()
     classroom = fields.IntField()
-    
+
+Lessons = pydantic_model_creator(Lesson, name="Lesson")
+LessonsIn = pydantic_model_creator(Lesson, name="LessonsIn", exclude=("uuid",))
