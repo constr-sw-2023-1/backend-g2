@@ -1,0 +1,24 @@
+{
+  "name": "backend-g2",
+  "version": "1.0.0",
+  "description": "![Modelagem de dados](ClassDiagram.png)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/constr-sw-2023-1/backend-g2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/constr-sw-2023-1/backend-g2/issues"
+  },
+  "homepage": "https://github.com/constr-sw-2023-1/backend-g2#readme",
+  "dependencies": {
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.3"
+  }
+}
