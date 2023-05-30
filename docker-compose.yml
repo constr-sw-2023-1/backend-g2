@@ -1,9 +1,9 @@
 version: "2.3"
-
+networks:
+  grupo2:
 volumes:
   db-data-back-g2:
     external: true
-
 services:
   db-back-g2:
     container_name: db-back-g2
@@ -16,8 +16,16 @@ services:
       - POSTGRES_DB=backend
     volumes:
       - db-data-back-g2:/var/lib/postgresql/data
-
-    # environment:
-    #   - POSTGRES_USER=$POSTGRES_USER
-    #   - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
-    #   - POSTGRES_DB=$POSTGRES_DB
+    networks:
+      - grupo2
+  backend:
+      container_name: backend
+      build:
+        context: .
+        dockerfile: DockerFile
+      ports:
+        - 8085:8085
+      networks:
+        - grupo2
+      depends_on:
+        - db-back-g2
