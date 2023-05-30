@@ -20,3 +20,6 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123
       - POSTGRES_DB=app
+  
+  mysql:
+    restart: always
