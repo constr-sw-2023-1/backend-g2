@@ -4,7 +4,7 @@
     the database tables with data
 """
 from app.models import lesson, subject, type
-from tortoise import Tortoise, run_async
+from tortoise import Tortoise
 
 
 async def init_db():

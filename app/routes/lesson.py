@@ -1,12 +1,9 @@
-import asyncio
-import string
 from fastapi import APIRouter
 
 from ..controllers import lesson as lesson_controller
 from ..models import Lessons, LessonsIn, LessonPatch
 
 router = APIRouter(prefix="/lesson", tags=["Lesson"])
-
 
 @router.post("/", status_code=201)
 async def create_lesson(lessons: LessonsIn) -> Lessons:

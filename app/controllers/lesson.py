@@ -1,12 +1,7 @@
 """This is the controllers module, this folder should contain all the controllers
 """
-from datetime import datetime
-import string
-
-from fastapi import HTTPException, Request, Response
-
+from fastapi import HTTPException
 from ..models import Lesson, LessonsIn, Lessons, LessonPatch
-
 
 async def get_all_lessons():
     """Retrieve all lessons"""

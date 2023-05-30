@@ -6,7 +6,7 @@ def init_app(app: FastAPI):
     register_tortoise(
         app,
         db_url="postgres://root:root@localhost:5432/backend",
-        modules={"models": ["app.models.lesson"]},
+        modules={"models": ["app.models.lesson", "app.models.subjects", "app.models.type"]},
         generate_schemas=True,
         add_exception_handlers=True,
     )
