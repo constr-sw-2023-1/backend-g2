@@ -18,12 +18,12 @@ async def delete_lesson(lesson_id: str):
     return await lesson_controller.delete_lesson(lesson_id)
 
 @router.put("/{lesson_id}")
-async def update_lesson(lesson_id: int):
-    """Atualiza uma aula"""
-    return {"message": f"Lesson {lesson_id} updated successfully"}
+async def update_lesson(lesson_id: str, lessons: LessonsIn):
+    """Atualiza uma aula pelo seu id completamente"""
+    return await lesson_controller.put_lesson(lesson_id, lessons)
 
 @router.patch("/{lesson_id}")
-async def pacial_update_lesson(lesson_id: int):
+async def pacial_update_lesson(lesson_id: str):
     """Atualiza parcialmente uma aula"""
     return {"message": f"Lesson {lesson_id} updated successfully"}
 
