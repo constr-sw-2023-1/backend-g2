@@ -3,13 +3,14 @@ import string
 from fastapi import APIRouter
 
 from ..controllers import lesson as lesson_controller
-from ..models import Lessons, LessonsIn
+from ..models import Lessons, LessonsIn, LessonPatch
 
 router = APIRouter(prefix="/lesson", tags=["Lesson"])
 
 
 @router.post("/", status_code=201)
 async def create_lesson(lessons: LessonsIn) -> Lessons:
+    """Cria uma aula"""
     return await lesson_controller.create_lesson(lessons)
 
 @router.delete("/{lesson_id}")
@@ -23,9 +24,9 @@ async def update_lesson(lesson_id: str, lessons: LessonsIn):
     return await lesson_controller.put_lesson(lesson_id, lessons)
 
 @router.patch("/{lesson_id}")
-async def pacial_update_lesson(lesson_id: str):
+async def pacial_update_lesson(lesson_id: str, lessons: LessonPatch):
     """Atualiza parcialmente uma aula"""
-    return {"message": f"Lesson {lesson_id} updated successfully"}
+    return await lesson_controller.patch_lesson(lesson_id, lessons)
 
 @router.get("/")
 async def get_lessons():

@@ -5,7 +5,7 @@ import string
 
 from fastapi import HTTPException, Request, Response
 
-from ..models import Lesson, LessonsIn, Lessons
+from ..models import Lesson, LessonsIn, Lessons, LessonPatch
 
 
 async def get_all_lessons():
@@ -26,5 +26,9 @@ async def delete_lesson(lesson_id: str) -> int:
     return deleted_count
 
 async def put_lesson(lesson_id: str, lessons: LessonsIn) -> Lessons:
+    await Lesson.filter(uuid=lesson_id).update(**lessons.dict(exclude_unset=True))
+    return await Lessons.from_queryset_single(Lesson.get(uuid=lesson_id))
+
+async def patch_lesson(lesson_id: str, lessons: LessonPatch) -> Lessons:
     await Lesson.filter(uuid=lesson_id).update(**lessons.dict(exclude_unset=True))
     return await Lessons.from_queryset_single(Lesson.get(uuid=lesson_id))

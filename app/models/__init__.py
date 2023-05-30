@@ -1,6 +1,6 @@
 """This is the models module, this folder should contain all the models
 """
-from .lesson import Lesson, LessonsIn, Lessons
+from .lesson import Lesson, LessonsIn, Lessons, LessonPatch
 
 from fastapi import FastAPI
 
