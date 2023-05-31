@@ -1,0 +1,21 @@
+"Lessons": [{
+    "id": UUID(68b18dcc-3277-41cf-ae13-7119f00aac18),
+    "datetime": "2023/05/15 19:15:00",
+    "classroom": 412,
+    "subjects": [
+        {
+            "id": UUID(88cd17db-6bd3-43a0-9c96-3dfa12f3bdfa),
+            "name": "Construção de API de backend.",
+            "type": Ref("Types", UUID("c9854a60-0347-4e99-9441-b3b520be5e04"))
+        }
+    ]
+}]
+
+"Types": [{
+    "id": UUID(50ec9241-1689-4626-b53f-54d24abb21ca),
+    "name": "Aula Teorica"
+},
+{
+    "id": UUID(c9854a60-0347-4e99-9441-b3b520be5e04),
+    "name": "Aula Prática"
+}]
