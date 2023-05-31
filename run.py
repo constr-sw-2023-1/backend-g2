@@ -21,7 +21,7 @@ init_app(app)
 
 @app.on_event("startup")
 async def startup_event():
-    from migrate import init_db
+    from app.migrate import init_db
     await init_db()
     # from migrate import populate
     # await populate()
@@ -29,7 +29,7 @@ async def startup_event():
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    from migrate import close_db
+    from app.migrate import close_db
     await close_db()
 
 arbitrary_types_allowed = True
@@ -54,7 +54,7 @@ def custom_openapi():
     if app.openapi_schema:
         return app.openapi_schema
     openapi_schema = get_openapi(
-        title="Backend_GRUPO2",
+        title="Backend Grupo - 2",
         version="1.0.0",
         description="Documentação Swagger grupo - 2",
         routes=app.routes,
@@ -78,4 +78,4 @@ async def root():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, port=8080)
+    uvicorn.run(app, port=8000)

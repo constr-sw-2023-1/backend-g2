@@ -26,7 +26,7 @@ async def pacial_update_lesson(lesson_id: str, lessons: LessonPatch):
     return await lesson_controller.patch_lesson(lesson_id, lessons)
 
 @router.get("/")
-async def get_lessons():
+async def get_lessons(q: str | None = None):
     """Recupera todas as aulas"""
     return await lesson_controller.get_all_lessons()
 
