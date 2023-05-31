@@ -6,11 +6,11 @@ function insertLesson(newLesson) {
 }
 
 function getLessons() {
-    return lessonsModel.findAll();
+    return lessonsModel.findAll({ where: { active: "true" } });
 }
 
 function getLessonById(id) {
-    return lessonsModel.findByPk(id);
+    return lessonsModel.findOne({ where: { id: id, active: "true" } });
 }
 
 async function updateLesson(id, newLesson) {
@@ -27,7 +27,7 @@ async function updateLesson(id, newLesson) {
     if (newLesson.active && newLesson.active !== currentLesson.active) {
         currentLesson.active = newLesson.active;
     }
-    
+
     await currentLesson.save();
     return currentLesson;
 }

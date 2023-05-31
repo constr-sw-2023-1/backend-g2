@@ -13,6 +13,10 @@ function getSubjectById(id) {
     return subjectsModel.findByPk(id);
 }
 
+function getSubjectByLessonId(lessonId) {
+    return subjectsModel.findAll({ where: { lessonId } });
+}
+
 async function updateSubject(id, newSubject) {
     const currentSubject = await getSubjectById(id);
 
@@ -43,5 +47,6 @@ module.exports = {
     getSubjects,
     getSubjectById,
     updateSubject,
-    deleteSubject
+    deleteSubject,
+    getSubjectByLessonId
 }

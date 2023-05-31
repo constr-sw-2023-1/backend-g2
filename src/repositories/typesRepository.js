@@ -6,11 +6,11 @@ function insertType(newType) {
 }
 
 function getTypes() {
-    return typesModel.findAll();
+    return typesModel.findAll({ where: { active: "true" } });
 }
 
 function getTypeById(id) {
-    return typesModel.findByPk(id);
+    return typesModel.findOne({ where: { id: id, active: "true" } });
 }
 
 async function updateType(id, newType) {
@@ -23,7 +23,7 @@ async function updateType(id, newType) {
     if (newType.active && newType.active !== currentType.active) {
         currentType.active = newType.active;
     }
-    
+
     await currentType.save();
     return currentType;
 }

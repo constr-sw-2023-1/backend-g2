@@ -1,10 +1,7 @@
 const typesRepository = require('../repositories/typesRepository');
 
 async function insertType(req, res, next) {
-    const name  = req.body.name;
-    const type = await typesRepository.insertType({
-        name
-    });
+    const type = await typesRepository.insertType({ name: req.body.name });
     res.json(type);
 }
 
@@ -14,25 +11,17 @@ async function getTypes(req, res, next) {
 }
 
 async function getTypeById(req, res, next) {
-    const id = req.params.id;
-    const type = await typesRepository.getTypeById(id);
+    const type = await typesRepository.getTypeById(req.params.id);
     res.json(type);
 }
 
 async function updateType(req, res, next) {
-    const id = req.params.id;
-    const name = req.body.name;
-    const type = await typesRepository.updateType(id, {
-        name
-    });
+    const type = await typesRepository.updateType(req.params.id, { name: req.body.name });
     res.json(type);
 }
 
 async function deleteType(req, res, next) {
-    const id = req.params.id;
-    const type = await typesRepository.updateType(id, {
-        active: "false"
-    });
+    const type = await typesRepository.updateType(req.params.id, { active: "false" });
     res.json(type);
 }
 
