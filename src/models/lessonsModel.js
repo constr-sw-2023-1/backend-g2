@@ -22,6 +22,6 @@ const LessonsModel = database.define('lessons', {
     },
     createdAt: Sequelize.DATE,
     updatedAt: Sequelize.DATE
-})
+});
 
 module.exports = LessonsModel;

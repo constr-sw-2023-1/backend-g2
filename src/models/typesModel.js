@@ -18,6 +18,6 @@ const TypesModel = database.define('types', {
     },
     createdAt: Sequelize.DATE,
     updatedAt: Sequelize.DATE
-})
+});
 
 module.exports = TypesModel;
