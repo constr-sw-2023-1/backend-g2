@@ -4,10 +4,12 @@ const options = {
   swaggerDefinition: {
     info: {
       title: 'Lessons - Grupo 2',
-      version: '1.0',
+      version: '1.0.0'
     },
   },
-  apis: ['**/*.js'], // Especifique aqui os caminhos para seus arquivos de rota
+  apis: ['../src/routes/*.js']
 };
+
 const swaggerSpec = swaggerJSDoc(options);
+
 module.exports = swaggerSpec;
