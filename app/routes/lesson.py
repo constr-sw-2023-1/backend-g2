@@ -26,9 +26,11 @@ async def pacial_update_lesson(lesson_id: str, lessons: LessonPatch):
     return await lesson_controller.patch_lesson(lesson_id, lessons)
 
 @router.get("/")
-async def get_lessons(classroom: int | None = Query(default=None, description="Filtro por sala de aula"),):
+async def get_lessons(classroom: int | None = Query(default=None, description="Filtro por sala de aula"),
+                      date: str | None = Query(default=None, description="Filtro por data")
+                      ):
     """Recupera todas as aulas"""
-    return await lesson_controller.get_all_lessons(classroom)
+    return await lesson_controller.get_all_lessons(classroom, date)
 
 @router.get("/{lesson_id}")
 async def get_lesson(lesson_id: str):
