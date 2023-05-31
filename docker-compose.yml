@@ -1,0 +1,32 @@
+version: "2.3"
+networks:
+  grupo2:
+    driver: bridge
+volumes:
+  db-data-back-g2:
+    external: true
+services:
+  db-back-g2:
+    container_name: db-back-g2
+    image: postgres:alpine3.18
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=backend
+    volumes:
+      - db-data-back-g2:/var/lib/postgresql/data
+    networks:
+      - grupo2
+  backend-g2:
+      container_name: backend-g2
+      build:
+        context: .
+        dockerfile: DockerFile
+      ports:
+        - 8000:8000
+      networks:
+        - grupo2
+      depends_on:
+        - db-back-g2

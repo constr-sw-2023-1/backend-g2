@@ -1,19 +1,13 @@
-"""This is the main module of the project
+from fastapi import FastAPI
 
-# POST /{resource}: criação de um objeto
-# DELETE /{resource}/{id}: exclusão de um objeto
-# PUT /{resource}/{id}: atualização de todo o objeto
-# PATCH /{resource}/{id}: atualização de alguns atributos do objeto
-# GET /{resource}: recuperação de todos os objetos
-# GET /{resource}/{id}: recuperação de um objeto pelo seu id
 
-"""
+
+from . import dependencies, routes, models, controllers
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes import init_app
 from tortoise.contrib.fastapi import register_tortoise
-
 
 app = FastAPI()
 
@@ -43,7 +37,7 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -65,7 +59,6 @@ def custom_openapi():
     app.openapi_schema = openapi_schema
     return app.openapi_schema
 
-
 app.openapi = custom_openapi
 
 @app.get("/")
@@ -77,6 +70,9 @@ async def root():
     """
     return {"message": "Hello World"}
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, port=8000)
+
+def create_app() -> FastAPI:
+    app = FastAPI()
+    routes.init_app(app)
+    dependencies.init_app(app)
+    return app
