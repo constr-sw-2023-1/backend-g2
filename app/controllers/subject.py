@@ -17,7 +17,7 @@ async def get_subject(subject_id: str) -> Subjects:
     return await Subjects.from_queryset_single(Subject.get(uuid=subject_id))
 
 async def delete_subject(subject_id: str) -> int:
-    deleted_count = await Subject.filter(uuid=subject_id).delete()
+    deleted_count = await Subject.filter(uuid=subject_id).update(active=False)
     if not deleted_count:
         raise HTTPException(status_code=404, detail=f"Subject {subject_id} not found")
     return deleted_count

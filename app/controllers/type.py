@@ -9,7 +9,7 @@ async def create_type(type: TypesIn) -> Types:
 
 async def delete_type(type_id: str):
     """Deleta um type"""
-    deleted_count = await Type.filter(uuid=type_id).delete()
+    deleted_count = await Type.filter(uuid=type_id).update(active=False)
     if not deleted_count:
         raise HTTPException(status_code=404, detail=f"Type {type_id} not found")
     return deleted_count

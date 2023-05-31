@@ -21,7 +21,7 @@ async def get_lesson(lesson_id: str) -> Lessons:
     return await Lessons.from_queryset_single(Lesson.get(uuid=lesson_id))
 
 async def delete_lesson(lesson_id: str) -> int:
-    deleted_count = await Lesson.filter(uuid=lesson_id).delete()
+    deleted_count = await Lesson.filter(uuid=lesson_id).update(active=False)
     if not deleted_count:
         raise HTTPException(status_code=404, detail=f"Lesson {lesson_id} not found")
     return deleted_count

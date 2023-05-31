@@ -8,6 +8,7 @@ class Subject(Model):
     name = fields.TextField()
     lesson = fields.ForeignKeyField('models.Lesson', related_name='subjects')
     type = fields.ForeignKeyField('models.Type', related_name='subjects')
+    active = fields.BooleanField(default=True)
 
 class SubjectsIn(BaseModel):
     name: str
@@ -16,4 +17,4 @@ class SubjectsIn(BaseModel):
 
 Subjects = pydantic_model_creator(Subject, name= "Subject")
 # SubjectsIn = pydantic_model_creator(Subject, name= "SubjectsIn", exclude=("uuid",))
-SubjectsPatch = pydantic_model_creator(Subject, name= "SubjectsPatch", optional=("name", "lesson", "type"), exclude=("uuid",))
+SubjectsPatch = pydantic_model_creator(Subject, name= "SubjectsPatch", optional=("name", "lesson", "type", "active"), exclude=("uuid",))
