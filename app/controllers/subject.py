@@ -3,8 +3,10 @@
 from fastapi import HTTPException
 from ..models import Subject, SubjectsIn, Subjects, SubjectsPatch
 
-async def get_all_subjects():
+async def get_all_subjects(name : str | None = None):
     """Retrieve all subjects"""
+    if name:
+        return await Subjects.from_queryset(Subject.filter(name=name))
     return await Subjects.from_queryset(Subject.all())
 
 async def create_subject(subjects: SubjectsIn) -> Subjects:

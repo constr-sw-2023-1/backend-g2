@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 
 from ..controllers import type as type_controller
 from ..models import Types, TypesIn, TypesPatch
@@ -26,9 +26,9 @@ async def parcial_update_type(type_id: str, type: TypesPatch) -> Types:
     return await type_controller.patch_type(type_id, type)
 
 @router.get("/")
-async def get_type():
+async def get_type(name: str | None = Query(default=None, description="Filtro por nome"),):
     """Recupera todos os types"""
-    return await type_controller.get_type()
+    return await type_controller.get_type(name)
 
 @router.get("/{type_id}")
 async def get_type(type_id: str):

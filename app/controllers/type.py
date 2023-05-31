@@ -22,8 +22,10 @@ async def patch_type(type_id: str, type: TypesPatch) -> Types:
     await Type.filter(uuid=type_id).update(**type.dict(exclude_unset=True))
     return await Types.from_queryset_single(Type.get(uuid=type_id))
 
-async def get_type():
+async def get_type(name : str | None = None) -> Types:
     """Retorna todos os types"""
+    if name:
+        return await Types.from_queryset(Type.filter(name=name))
     return await Types.from_queryset(Type.all())
 
 async def get_type_id(type_id: str) -> Types:

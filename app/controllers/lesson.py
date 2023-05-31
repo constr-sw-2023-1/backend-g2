@@ -3,8 +3,10 @@
 from fastapi import HTTPException
 from ..models import Lesson, LessonsIn, Lessons, LessonPatch
 
-async def get_all_lessons():
+async def get_all_lessons(classroom: int | None = None):
     """Retrieve all lessons"""
+    if classroom:
+        return await Lessons.from_queryset(Lesson.filter(classroom=classroom))
     return await Lessons.from_queryset(Lesson.all())
 
 async def create_lesson(lessons: LessonsIn) -> Lessons:

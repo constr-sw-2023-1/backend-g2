@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 
 from ..controllers import lesson as lesson_controller
 from ..models import Lessons, LessonsIn, LessonPatch
@@ -26,9 +26,9 @@ async def pacial_update_lesson(lesson_id: str, lessons: LessonPatch):
     return await lesson_controller.patch_lesson(lesson_id, lessons)
 
 @router.get("/")
-async def get_lessons(q: str | None = None):
+async def get_lessons(classroom: int | None = Query(default=None, description="Filtro por sala de aula"),):
     """Recupera todas as aulas"""
-    return await lesson_controller.get_all_lessons()
+    return await lesson_controller.get_all_lessons(classroom)
 
 @router.get("/{lesson_id}")
 async def get_lesson(lesson_id: str):
