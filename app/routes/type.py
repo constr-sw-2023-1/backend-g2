@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, HTTPException
 
 from ..controllers import type as type_controller
 from ..models import Types, TypesIn, TypesPatch
@@ -25,12 +25,26 @@ async def parcial_update_type(type_id: str, type: TypesPatch) -> Types:
     """Atualiza parcialmente um type"""
     return await type_controller.patch_type(type_id, type)
 
+"""
+@router.get("/")
+async def get_resource(name: str | None = Query(default=None, description="Filtro por nome"),
+                       active: bool | None = Query(default=None, description="Filtro por status"),
+                       ):
+    
+    return await type_controller.get_resource(name, active)
+"""
 @router.get("/")
 async def get_type(name: str | None = Query(default=None, description="Filtro por nome"),):
     """Recupera todos os types"""
-    return await type_controller.get_type(name)
+    body = await type_controller.get_type(name)
+    if body:
+        return body
+    return HTTPException(status_code=404, detail="Type not found")
 
 @router.get("/{type_id}")
 async def get_type(type_id: str):
     """ Recupera um type pelo seu id"""
-    return await type_controller.get_type_id(type_id)
+    body = await type_controller.get_type_id(type_id)
+    if not body:
+        raise HTTPException(status_code=404, detail="Type not found")
+    return body

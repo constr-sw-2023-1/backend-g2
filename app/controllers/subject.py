@@ -7,12 +7,12 @@ from ..models import Subject, SubjectsIn, Subjects, SubjectsPatch, SubjectsOut, 
 async def get_all_subjects(name : str | None = None) -> list[SubjectsOut]:
     """Retrieve all subjects"""
     if name:
-        batata = await Subject.filter(name=name).prefetch_related('lesson', 'type').all()
-        batata = subjects_para_subjectsout(batata)
-        return batata
-    potato = await Subject.all().prefetch_related('lesson', 'type')
-    potato = subjects_para_subjectsout(potato)
-    return potato
+        body = await Subject.filter(name=name).prefetch_related('lesson', 'type').all()
+        body = subjects_para_subjectsout(body)
+        return body
+    body = await Subject.all().prefetch_related('lesson', 'type')
+    body = subjects_para_subjectsout(body)
+    return body
 
 async def create_subject(subjects: SubjectsIn) -> Subjects:
     new_subject = await Subject.create(**subjects.dict(exclude_unset=True))

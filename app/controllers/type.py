@@ -32,3 +32,35 @@ async def get_type_id(type_id: str) -> Types:
     """Retorna um type específico"""
     return await Types.from_queryset_single(Type.get(uuid=type_id))
 
+"""
+def apply_comparison_operator(query, field, operator, value):
+    if operator == "eq":
+        return query.filter(**{field: value})
+    elif operator == "neq":
+        return query.filter(**{field + "__ne": value})
+    elif operator == "gt":
+        return query.filter(**{field + "__gt": value})
+    elif operator == "gteq":
+        return query.filter(**{field + "__gte": value})
+    elif operator == "lt":
+        return query.filter(**{field + "__lt": value})
+    elif operator == "lteq":
+        return query.filter(**{field + "__lte": value})
+    elif operator == "like":
+        return query.filter(**{field + "__icontains": value})
+    else:
+        return query
+    
+async def get_resource(name: str = None, active: str = None) -> Types:
+    query = Type.all()
+
+    if name:
+        operator, value = name.split(":")
+        query = apply_comparison_operator(query, "name", operator, value)
+    if active:
+        operator, value = active.split(":")
+        query = apply_comparison_operator(query, "active", operator, value)
+
+    resources = await query
+    return await Types.from_queryset(resources)
+"""
