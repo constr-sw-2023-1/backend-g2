@@ -13,8 +13,5 @@ RUN pip3 install -r requirements.txt
 # copy every content from the local file to the image
 COPY ./app /app/app
 
-# configure the container to run in an executed manner
-
-
 EXPOSE 8000
 CMD ["python3", "-m", "app"]

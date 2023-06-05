@@ -3,7 +3,7 @@
 
 # Modelagem de dados
 
- ![Modelagem de dados](ClassDiagram.png)
+ ![Modelagem de dados](img/ClassDiagram.png)
 
 
  
