@@ -5,7 +5,7 @@
             "date": "15/05/2023",
             "hour": "19:15:00",
             "classroom": 412,
-            "contents": [
+            "subjects": [
                 {
                     "name": "Construção de API de backend.",
                     "type": Ref("Types", UUID("c9854a60-0347-4e99-9441-b3b520be5e04"))
