@@ -78,3 +78,9 @@ Rodar o projeto:
 ```bash
 uvicorn main:app --reload
 ```
+
+AWS:
+
+```
+ec2-18-220-210-173.us-east-2.compute.amazonaws.com:8000/docs
+```
