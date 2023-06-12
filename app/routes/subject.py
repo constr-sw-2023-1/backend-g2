@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Query
-
+from uuid import UUID
+from fastapi import APIRouter, Query, HTTPException
 from ..controllers import subject as subject_controller
 from ..models import Subjects, SubjectsIn, SubjectsPatch, SubjectsOut
 
@@ -26,11 +26,19 @@ async def pacial_update_subject(subject_id: str, subjects: SubjectsPatch) -> Sub
     return await subject_controller.patch_subject(subject_id, subjects)
 
 @router.get("/")
-async def get_subjects(name: str | None = Query(default=None, description="Filtro por nome"),) -> list[SubjectsOut]:
+async def get_subjects(name: str | None = Query(default=None, description="Filtro por nome"),
+                       active: bool | None = Query(default=None, description="Filtro por ativo")
+                       ) -> list[SubjectsOut]:
     """Recupera todas as aulas"""
-    return await subject_controller.get_all_subjects(name)
+    body = await subject_controller.get_all_subjects(name,active)
+    if body:
+        return body
+    raise HTTPException(status_code=404, detail="Subject not found")
 
 @router.get("/{subject_id}")
-async def get_subject(subject_id: str) -> list[SubjectsOut]:
+async def get_subject(subject_id: UUID) -> Subjects:
     """Recupera uma aula pelo seu id"""
-    return await subject_controller.get_subject(subject_id)
+    body = await subject_controller.get_subject(subject_id)
+    if body:
+        return body
+    raise HTTPException(status_code=404, detail="Subject not found")

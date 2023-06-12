@@ -1,37 +1,68 @@
 """This is the subject module, this folder should contain all the subject
 """
+from uuid import UUID
 from fastapi import HTTPException
 
 from ..models import Subject, SubjectsIn, Subjects, SubjectsPatch, SubjectsOut, TypesOut, LessonsOut
 
-async def get_all_subjects(name : str | None = None) -> list[SubjectsOut]:
+def filters(content):
+    if content.startswith("{neq}"):
+        return ("__not", content.split("{neq}")[1])
+    if content.startswith("{gt}"):
+        return ("__gt", content.split("{gt}")[1])
+    if content.startswith("{gteq}"):
+        return ("__gte", content.split("{gteq}")[1])
+    if content.startswith("{lt}"):
+        return ("__lt", content.split("{lt}")[1])
+    if content.startswith("{lteq}"):
+        return ("__lte", content.split("{lteq}")[1])
+    if content.startswith("{like}"):
+        return ("__contains", content.split("{like}")[1])
+    return ("", content)
+
+async def get_all_subjects(name : str | None = None,
+                           active : bool | None = None,
+                           ) -> list[SubjectsOut]:
     """Retrieve all subjects"""
-    if name:
-        batata = await Subject.filter(name=name).prefetch_related('lesson', 'type').all()
-        batata = subjects_para_subjectsout(batata)
-        return batata
-    potato = await Subject.all().prefetch_related('lesson', 'type')
-    potato = subjects_para_subjectsout(potato)
-    return potato
+    filter = {}
+
+    if name is not None:
+        sufix, value = filters(name)
+        filter["name" + sufix] = value
+    if active is not None:
+        filter["active"] = active
+
+    if filter:
+            body = await Subject.filter(**filter).prefetch_related('lesson', 'type').all()
+            body = subjects_para_subjectsout(body)
+            return body
+    body = await Subject.all().prefetch_related('lesson', 'type')
+    body = subjects_para_subjectsout(body)
+    return body
 
 async def create_subject(subjects: SubjectsIn) -> Subjects:
+    """Create a new subject"""
     new_subject = await Subject.create(**subjects.dict(exclude_unset=True))
     return await Subjects.from_tortoise_orm(new_subject)
 
-async def get_subject(subject_id: str) -> Subjects:
+async def get_subject(subject_id: UUID) -> Subjects:
+    """Retrieve a subject"""
     return await Subjects.from_queryset_single(Subject.get(uuid=subject_id))
 
 async def delete_subject(subject_id: str) -> int:
+    """Delete a subject"""
     deleted_count = await Subject.filter(uuid=subject_id).update(active=False)
-    if not deleted_count:
-        raise HTTPException(status_code=404, detail=f"Subject {subject_id} not found")
-    return deleted_count
+    if deleted_count:
+        return deleted_count
+    raise HTTPException(status_code=404, detail=f"Subject {subject_id} not found")
 
 async def put_subject(subject_id: str, subjects: SubjectsIn) -> Subjects:
+    """Update a subject"""
     await Subject.filter(uuid=subject_id).update(**subjects.dict(exclude_unset=True))
     return await Subjects.from_queryset_single(Subject.get(uuid=subject_id))
 
 async def patch_subject(subject_id: str, subjects: SubjectsPatch) -> Subjects:
+    """Partially Update a subject"""
     await Subject.filter(uuid=subject_id).update(**subjects.dict(exclude_unset=True))
     return await Subjects.from_queryset_single(Subject.get(uuid=subject_id))
 

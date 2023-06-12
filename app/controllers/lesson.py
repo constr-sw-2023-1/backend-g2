@@ -3,14 +3,39 @@
 from fastapi import HTTPException
 from ..models import Lesson, LessonsIn, Lessons, LessonPatch
 
-async def get_all_lessons(classroom: int | None = None, date: str | None = None):
+def filters(content):
+    if content.startswith("{neq}"):
+        return ("__not", content.split("{neq}")[1])
+    if content.startswith("{gt}"):
+        return ("__gt", content.split("{gt}")[1])
+    if content.startswith("{gteq}"):
+        return ("__gte", content.split("{gteq}")[1])
+    if content.startswith("{lt}"):
+        return ("__lt", content.split("{lt}")[1])
+    if content.startswith("{lteq}"):
+        return ("__lte", content.split("{lteq}")[1])
+    if content.startswith("{like}"):
+        return ("__contains", content.split("{like}")[1])
+    return ("", content)
+
+
+async def get_all_lessons(
+    classroom: str | None = None, datetime: str | None = None , active: bool | None = None
+):
     """Retrieve all lessons"""
-    if classroom and date:
-        return await Lessons.from_queryset(Lesson.filter(classroom=classroom, datetime=date))
-    if classroom:
-        return await Lessons.from_queryset(Lesson.filter(classroom=classroom))
-    if date:
-        return await Lessons.from_queryset(Lesson.filter(datetime=date))
+    filter = {}
+
+    if classroom is not None:
+        suffix, value = filters(classroom)
+        filter["classroom" + suffix] = int(value)
+    if datetime is not None:
+        suffix, value = filters(datetime)
+        filter["datetime" + suffix] = value
+    if active is not None:
+        filter["active"] = active
+
+    if filter:
+        return await Lessons.from_queryset(Lesson.filter(**filter))
     return await Lessons.from_queryset(Lesson.all())
 
 async def create_lesson(lessons: LessonsIn) -> Lessons:

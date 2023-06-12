@@ -1,4 +1,8 @@
-from fastapi import APIRouter, Query
+"""Rota de aula"""
+from datetime import datetime
+from uuid import UUID
+from fastapi import APIRouter, Query, HTTPException
+from flask import jsonify
 
 from ..controllers import lesson as lesson_controller
 from ..models import Lessons, LessonsIn, LessonPatch
@@ -26,13 +30,22 @@ async def pacial_update_lesson(lesson_id: str, lessons: LessonPatch):
     return await lesson_controller.patch_lesson(lesson_id, lessons)
 
 @router.get("/")
-async def get_lessons(classroom: int | None = Query(default=None, description="Filtro por sala de aula"),
-                      date: str | None = Query(default=None, description="Filtro por data")
-                      ):
+async def get_lessons(
+    classroom: str | None = Query(default=None, description="Filtro por sala de aula"),
+    datetime: str | None = Query(default=None, description="Filtro por data"),
+    active: bool | None = Query(default=None, description="Filtro por ativo"),
+):
     """Recupera todas as aulas"""
-    return await lesson_controller.get_all_lessons(classroom, date)
+    body = await lesson_controller.get_all_lessons(classroom, datetime, active)
+    if body:
+        return body
+    raise HTTPException(status_code=404, detail="Lesson not found")
+
 
 @router.get("/{lesson_id}")
-async def get_lesson(lesson_id: str):
+async def get_lesson(lesson_id: UUID):
     """Recupera uma aula pelo seu id"""
-    return await lesson_controller.get_lesson(lesson_id)
+    body = await lesson_controller.get_lesson(lesson_id)
+    if body == []:
+        raise HTTPException(status_code=404, detail="Nenhuma aula encontrada")
+    return body
