@@ -1,6 +1,5 @@
 """This is the controllers module, this folder should contain all the controllers
 """
-from datetime import datetime
 from fastapi import HTTPException
 from ..models import Lesson, LessonsIn, Lessons, LessonPatch
 

@@ -1,15 +1,41 @@
 """This is the subject module, this folder should contain all the subject
 """
+from uuid import UUID
 from fastapi import HTTPException
 
 from ..models import Subject, SubjectsIn, Subjects, SubjectsPatch, SubjectsOut, TypesOut, LessonsOut
 
-async def get_all_subjects(name : str | None = None) -> list[SubjectsOut]:
+def filters(content):
+    if content.startswith("{neq}"):
+        return ("__not", content.split("{neq}")[1])
+    if content.startswith("{gt}"):
+        return ("__gt", content.split("{gt}")[1])
+    if content.startswith("{gteq}"):
+        return ("__gte", content.split("{gteq}")[1])
+    if content.startswith("{lt}"):
+        return ("__lt", content.split("{lt}")[1])
+    if content.startswith("{lteq}"):
+        return ("__lte", content.split("{lteq}")[1])
+    if content.startswith("{like}"):
+        return ("__contains", content.split("{like}")[1])
+    return ("", content)
+
+async def get_all_subjects(name : str | None = None,
+                           active : bool | None = None,
+                           ) -> list[SubjectsOut]:
     """Retrieve all subjects"""
-    if name:
-        body = await Subject.filter(name=name).prefetch_related('lesson', 'type').all()
-        body = subjects_para_subjectsout(body)
-        return body
+    filter = {}
+
+    if name is not None:
+        sufix, value = filters(name)
+        filter["name" + sufix] = value
+    if active is not None:
+        filter["active"] = active
+
+    if filter:
+            body = await Subject.filter(**filter).prefetch_related('lesson', 'type').all()
+            body = subjects_para_subjectsout(body)
+            return body
     body = await Subject.all().prefetch_related('lesson', 'type')
     body = subjects_para_subjectsout(body)
     return body
