@@ -1,156 +1,42 @@
 """This is the controllers module, this folder should contain all the controllers
 """
+from datetime import datetime
 from fastapi import HTTPException
 from ..models import Lesson, LessonsIn, Lessons, LessonPatch
 
-async def get_all_lessons(classroom: int | None = None,
-                           date: str | None = None,
-                           classroom_neq: int | None = None,
-                           classroom_gt: int | None = None,
-                           classroom_gteq: int | None = None,
-                           classroom_lt: int | None = None,
-                           classroom_lteq: int | None = None,
-                           classroom_like: int | None = None,
-                           date_neq: str | None = None,
-                           date_gt: str | None = None,
-                           date_gteq: str | None = None,
-                           date_lt: str | None = None,
-                           date_lteq: str | None = None,
-                           date_like: str | None = None
-                           ):
-    """Retrieve all lessons"""
-    if classroom_neq:
-        return await Lessons.from_queryset(Lesson.filter(classroom__not=classroom_neq))
-    if classroom_gt:
-        return await Lessons.from_queryset(Lesson.filter(classroom__gt=classroom_gt))
-    if classroom_gteq:
-        return await Lessons.from_queryset(Lesson.filter(classroom__gte=classroom_gteq))
-    if classroom_lt:
-        return await Lessons.from_queryset(Lesson.filter(classroom__lt=classroom_lt))
-    if classroom_lteq:
-        return await Lessons.from_queryset(Lesson.filter(classroom__lte=classroom_lteq))
-    if classroom_like:
-        return await Lessons.from_queryset(Lesson.filter(classroom__icontains=classroom_like))
-    if date_neq:
-        return await Lessons.from_queryset(Lesson.filter(datetime__not=date_neq))
-    if date_gt:
-        return await Lessons.from_queryset(Lesson.filter(datetime__gt=date_gt))
-    if date_gteq:
-        return await Lessons.from_queryset(Lesson.filter(datetime__gte=date_gteq))
-    if date_lt:
-        return await Lessons.from_queryset(Lesson.filter(datetime__lt=date_lt))
-    if date_lteq:
-        return await Lessons.from_queryset(Lesson.filter(datetime__lte=date_lteq))
-    if date_like:
-        return await Lessons.from_queryset(Lesson.filter(datetime__icontains=date_like))
-    
-    if classroom_neq and date:
-        return await Lessons.from_queryset(Lesson.filter(classroom__not=classroom_neq, datetime=date))
-    if classroom_gt and date:
-        return await Lessons.from_queryset(Lesson.filter(classroom__gt=classroom_gt, datetime=date))
-    if classroom_gteq and date:
-        return await Lessons.from_queryset(Lesson.filter(classroom__gte=classroom_gteq, datetime=date))
-    if classroom_lt and date:
-        return await Lessons.from_queryset(Lesson.filter(classroom__lt=classroom_lt, datetime=date))
-    if classroom_lteq and date:
-        return await Lessons.from_queryset(Lesson.filter(classroom__lte=classroom_lteq, datetime=date))
-    if classroom_like and date:
-        return await Lessons.from_queryset(Lesson.filter(classroom__icontains=classroom_like, datetime=date))
-    if date_neq and classroom:
-        return await Lessons.from_queryset(Lesson.filter(datetime__not=date_neq, classroom=classroom))
-    if date_gt and classroom:
-        return await Lessons.from_queryset(Lesson.filter(datetime__gt=date_gt, classroom=classroom))
-    if date_gteq and classroom:
-        return await Lessons.from_queryset(Lesson.filter(datetime__gte=date_gteq, classroom=classroom))
-    if date_lt and classroom:
-        return await Lessons.from_queryset(Lesson.filter(datetime__lt=date_lt, classroom=classroom))
-    if date_lteq and classroom:
-        return await Lessons.from_queryset(Lesson.filter(datetime__lte=date_lteq, classroom=classroom))
-    if date_like and classroom:
-        return await Lessons.from_queryset(Lesson.filter(datetime__icontains=date_like, classroom=classroom))
-    
-    if classroom_neq and date_neq:
-        return await Lessons.from_queryset(Lesson.filter(classroom__not=classroom_neq, datetime__not=date_neq))
-    if classroom_gt and date_neq:
-        return await Lessons.from_queryset(Lesson.filter(classroom__gt=classroom_gt, datetime__not=date_neq))
-    if classroom_gteq and date_neq:
-        return await Lessons.from_queryset(Lesson.filter(classroom__gte=classroom_gteq, datetime__not=date_neq))
-    if classroom_lt and date_neq:
-        return await Lessons.from_queryset(Lesson.filter(classroom__lt=classroom_lt, datetime__not=date_neq))
-    if classroom_lteq and date_neq:
-        return await Lessons.from_queryset(Lesson.filter(classroom__lte=classroom_lteq, datetime__not=date_neq))
-    if classroom_like and date_neq:
-        return await Lessons.from_queryset(Lesson.filter(classroom__icontains=classroom_like, datetime__not=date_neq))
-    if date_gt and classroom_neq:
-        return await Lessons.from_queryset(Lesson.filter(datetime__gt=date_gt, classroom__not=classroom_neq))
-    if date_gteq and classroom_neq:
-        return await Lessons.from_queryset(Lesson.filter(datetime__gte=date_gteq, classroom__not=classroom_neq))
-    if date_lt and classroom_neq:
-        return await Lessons.from_queryset(Lesson.filter(datetime__lt=date_lt, classroom__not=classroom_neq))
-    if date_lteq and classroom_neq:
-        return await Lessons.from_queryset(Lesson.filter(datetime__lte=date_lteq, classroom__not=classroom_neq))
-    if date_like and classroom_neq:
-        return await Lessons.from_queryset(Lesson.filter(datetime__icontains=date_like, classroom__not=classroom_neq))
-    
-    if classroom_gt and date_gt:
-        return await Lessons.from_queryset(Lesson.filter(classroom__gt=classroom_gt, datetime__gt=date_gt))
-    if classroom_gteq and date_gt:
-        return await Lessons.from_queryset(Lesson.filter(classroom__gte=classroom_gteq, datetime__gt=date_gt))
-    if classroom_lt and date_gt:
-        return await Lessons.from_queryset(Lesson.filter(classroom__lt=classroom_lt, datetime__gt=date_gt))
-    if classroom_lteq and date_gt:
-        return await Lessons.from_queryset(Lesson.filter(classroom__lte=classroom_lteq, datetime__gt=date_gt))
-    if classroom_like and date_gt:
-        return await Lessons.from_queryset(Lesson.filter(classroom__icontains=classroom_like, datetime__gt=date_gt))
-    if date_gteq and classroom_gt:
-        return await Lessons.from_queryset(Lesson.filter(datetime__gte=date_gteq, classroom__gt=classroom_gt))
-    if date_lt and classroom_gt:
-        return await Lessons.from_queryset(Lesson.filter(datetime__lt=date_lt, classroom__gt=classroom_gt))
-    if date_lteq and classroom_gt:
-        return await Lessons.from_queryset(Lesson.filter(datetime__lte=date_lteq, classroom__gt=classroom_gt))
-    if date_like and classroom_gt:
-        return await Lessons.from_queryset(Lesson.filter(datetime__icontains=date_like, classroom__gt=classroom_gt))
-    
-    if classroom_gteq and date_gteq:
-        return await Lessons.from_queryset(Lesson.filter(classroom__gte=classroom_gteq, datetime__gte=date_gteq))
-    if classroom_lt and date_gteq:
-        return await Lessons.from_queryset(Lesson.filter(classroom__lt=classroom_lt, datetime__gte=date_gteq))
-    if classroom_lteq and date_gteq:
-        return await Lessons.from_queryset(Lesson.filter(classroom__lte=classroom_lteq, datetime__gte=date_gteq))
-    if classroom_like and date_gteq:
-        return await Lessons.from_queryset(Lesson.filter(classroom__icontains=classroom_like, datetime__gte=date_gteq))
-    if date_lt and classroom_gteq:
-        return await Lessons.from_queryset(Lesson.filter(datetime__lt=date_lt, classroom__gte=classroom_gteq))
-    if date_lteq and classroom_gteq:
-        return await Lessons.from_queryset(Lesson.filter(datetime__lte=date_lteq, classroom__gte=classroom_gteq))
-    if date_like and classroom_gteq:
-        return await Lessons.from_queryset(Lesson.filter(datetime__icontains=date_like, classroom__gte=classroom_gteq))
-    
-    if classroom_lt and date_lt:
-        return await Lessons.from_queryset(Lesson.filter(classroom__lt=classroom_lt, datetime__lt=date_lt))
-    if classroom_lteq and date_lt:
-        return await Lessons.from_queryset(Lesson.filter(classroom__lte=classroom_lteq, datetime__lt=date_lt))
-    if classroom_like and date_lt:
-        return await Lessons.from_queryset(Lesson.filter(classroom__icontains=classroom_like, datetime__lt=date_lt))
-    if date_lteq and classroom_lt:
-        return await Lessons.from_queryset(Lesson.filter(datetime__lte=date_lteq, classroom__lt=classroom_lt))
-    if date_like and classroom_lt:
-        return await Lessons.from_queryset(Lesson.filter(datetime__icontains=date_like, classroom__lt=classroom_lt))
-    
-    if classroom_lteq and date_lteq:
-        return await Lessons.from_queryset(Lesson.filter(classroom__lte=classroom_lteq, datetime__lte=date_lteq))
-    if classroom_like and date_lteq:
-        return await Lessons.from_queryset(Lesson.filter(classroom__icontains=classroom_like, datetime__lte=date_lteq))
-    if date_like and classroom_lteq:
-        return await Lessons.from_queryset(Lesson.filter(datetime__icontains=date_like, classroom__lte=classroom_lteq))
-    
+def filters(content):
+    if content.startswith("{neq}"):
+        return ("__not", content.split("{neq}")[1])
+    if content.startswith("{gt}"):
+        return ("__gt", content.split("{gt}")[1])
+    if content.startswith("{gteq}"):
+        return ("__gte", content.split("{gteq}")[1])
+    if content.startswith("{lt}"):
+        return ("__lt", content.split("{lt}")[1])
+    if content.startswith("{lteq}"):
+        return ("__lte", content.split("{lteq}")[1])
+    if content.startswith("{like}"):
+        return ("__contains", content.split("{like}")[1])
+    return ("", content)
 
-    if classroom and date:
-        return await Lessons.from_queryset(Lesson.filter(classroom=classroom, datetime=date))
-    if classroom:
-        return await Lessons.from_queryset(Lesson.filter(classroom=classroom))
-    if date:
-        return await Lessons.from_queryset(Lesson.filter(datetime=date))
+
+async def get_all_lessons(
+    classroom: str | None = None, datetime: str | None = None , active: bool | None = None
+):
+    """Retrieve all lessons"""
+    filter = {}
+
+    if classroom is not None:
+        suffix, value = filters(classroom)
+        filter["classroom" + suffix] = int(value)
+    if datetime is not None:
+        suffix, value = filters(datetime)
+        filter["datetime" + suffix] = value
+    if active is not None:
+        filter["active"] = active
+
+    if filter:
+        return await Lessons.from_queryset(Lesson.filter(**filter))
     return await Lessons.from_queryset(Lesson.all())
 
 async def create_lesson(lessons: LessonsIn) -> Lessons:

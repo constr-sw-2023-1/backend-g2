@@ -25,26 +25,20 @@ async def parcial_update_type(type_id: str, type: TypesPatch) -> Types:
     """Atualiza parcialmente um type"""
     return await type_controller.patch_type(type_id, type)
 
-"""
 @router.get("/")
-async def get_resource(name: str | None = Query(default=None, description="Filtro por nome"),
-                       active: bool | None = Query(default=None, description="Filtro por status"),
-                       ):
-    
-    return await type_controller.get_resource(name, active)
-"""
-@router.get("/")
-async def get_type(name: str | None = Query(default=None, description="Filtro por nome"),):
+async def get_type(name: str | None = Query(default=None, description="Filtro por nome"),
+                   active: bool | None = Query(default=None, description="Filtro por ativo"),
+                   ):
     """Recupera todos os types"""
-    body = await type_controller.get_type(name)
+    body = await type_controller.get_type(name, active)
     if body:
         return body
-    return HTTPException(status_code=404, detail="Type not found")
+    raise HTTPException(status_code=404, detail="Type not found")
 
 @router.get("/{type_id}")
 async def get_type(type_id: str):
     """ Recupera um type pelo seu id"""
     body = await type_controller.get_type_id(type_id)
-    if not body:
-        raise HTTPException(status_code=404, detail="Type not found")
-    return body
+    if body:
+        return body
+    raise HTTPException(status_code=404, detail="Type not found")
