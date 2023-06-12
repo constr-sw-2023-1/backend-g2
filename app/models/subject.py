@@ -1,3 +1,4 @@
+from uuid import UUID
 from pydantic import BaseModel
 from tortoise import fields
 from tortoise.models import Model
@@ -14,8 +15,8 @@ class Subject(Model):
 
 class SubjectsIn(BaseModel):
     name: str
-    lesson_id: str
-    type_id: str
+    lesson_id: UUID
+    type_id: UUID
 
 class SubjectsOut(BaseModel):
     uuid: str
