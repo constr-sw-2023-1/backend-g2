@@ -1,5 +1,4 @@
-
-
+"""Type controller"""
 from fastapi import HTTPException
 from ..models import Type, TypesIn, Types, TypesPatch
 
@@ -15,10 +14,12 @@ async def delete_type(type_id: str):
     return deleted_count
 
 async def put_type(type_id: str, type: TypesIn) -> Types:
+    """Atualiza um type"""
     await Type.filter(uuid=type_id).update(**type.dict(exclude_unset=True))
     return await Types.from_queryset_single(Type.get(uuid=type_id))
 
 async def patch_type(type_id: str, type: TypesPatch) -> Types:
+    """Atualiza parcialmente um type"""
     await Type.filter(uuid=type_id).update(**type.dict(exclude_unset=True))
     return await Types.from_queryset_single(Type.get(uuid=type_id))
 

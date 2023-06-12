@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Query, HTTPException
-
 from ..controllers import subject as subject_controller
 from ..models import Subjects, SubjectsIn, SubjectsPatch, SubjectsOut
 
@@ -31,10 +30,12 @@ async def get_subjects(name: str | None = Query(default=None, description="Filtr
     body = await subject_controller.get_all_subjects(name)
     if body:
         return body
-    else:
-        raise HTTPException(status_code=404, detail="Subject not found")
+    raise HTTPException(status_code=404, detail="Subject not found")
 
 @router.get("/{subject_id}")
 async def get_subject(subject_id: str) -> list[SubjectsOut]:
     """Recupera uma aula pelo seu id"""
-    return await subject_controller.get_subject(subject_id)
+    body = await subject_controller.get_subject(subject_id)
+    if body:
+        return body
+    raise HTTPException(status_code=404, detail="Subject not found")

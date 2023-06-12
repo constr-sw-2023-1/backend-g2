@@ -15,23 +15,28 @@ async def get_all_subjects(name : str | None = None) -> list[SubjectsOut]:
     return body
 
 async def create_subject(subjects: SubjectsIn) -> Subjects:
+    """Create a new subject"""
     new_subject = await Subject.create(**subjects.dict(exclude_unset=True))
     return await Subjects.from_tortoise_orm(new_subject)
 
 async def get_subject(subject_id: str) -> Subjects:
+    """Retrieve a subject"""
     return await Subjects.from_queryset_single(Subject.get(uuid=subject_id))
 
 async def delete_subject(subject_id: str) -> int:
+    """Delete a subject"""
     deleted_count = await Subject.filter(uuid=subject_id).update(active=False)
-    if not deleted_count:
-        raise HTTPException(status_code=404, detail=f"Subject {subject_id} not found")
-    return deleted_count
+    if deleted_count:
+        return deleted_count
+    raise HTTPException(status_code=404, detail=f"Subject {subject_id} not found")
 
 async def put_subject(subject_id: str, subjects: SubjectsIn) -> Subjects:
+    """Update a subject"""
     await Subject.filter(uuid=subject_id).update(**subjects.dict(exclude_unset=True))
     return await Subjects.from_queryset_single(Subject.get(uuid=subject_id))
 
 async def patch_subject(subject_id: str, subjects: SubjectsPatch) -> Subjects:
+    """Partially Update a subject"""
     await Subject.filter(uuid=subject_id).update(**subjects.dict(exclude_unset=True))
     return await Subjects.from_queryset_single(Subject.get(uuid=subject_id))
 

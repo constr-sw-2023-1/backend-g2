@@ -1,3 +1,4 @@
+"""Rota de aula"""
 from datetime import datetime
 from uuid import UUID
 from fastapi import APIRouter, Query, HTTPException

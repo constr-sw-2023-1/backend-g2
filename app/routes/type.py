@@ -1,5 +1,5 @@
+"""Rotas para o CRUD de types"""
 from fastapi import APIRouter, Query, HTTPException
-
 from ..controllers import type as type_controller
 from ..models import Types, TypesIn, TypesPatch
 
