@@ -45,7 +45,7 @@ async def create_subject(subjects: SubjectsIn) -> Subjects:
     new_subject = await Subject.create(**subjects.dict(exclude_unset=True))
     return await Subjects.from_tortoise_orm(new_subject)
 
-async def get_subject(subject_id: str) -> Subjects:
+async def get_subject(subject_id: UUID) -> Subjects:
     """Retrieve a subject"""
     return await Subjects.from_queryset_single(Subject.get(uuid=subject_id))
 

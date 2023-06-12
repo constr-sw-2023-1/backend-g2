@@ -36,7 +36,7 @@ async def get_subjects(name: str | None = Query(default=None, description="Filtr
     raise HTTPException(status_code=404, detail="Subject not found")
 
 @router.get("/{subject_id}")
-async def get_subject(subject_id: str) -> list[SubjectsOut]:
+async def get_subject(subject_id: UUID) -> Subjects:
     """Recupera uma aula pelo seu id"""
     body = await subject_controller.get_subject(subject_id)
     if body:
