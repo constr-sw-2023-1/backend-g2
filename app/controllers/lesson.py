@@ -4,7 +4,7 @@ from fastapi import HTTPException
 from ..models import Lesson, LessonsIn, Lessons, LessonPatch
 
 def filters(content):
-    if content.contains("{"):
+    if content.startswith("{"):
         if content.startswith("{neq}"):
             return ("__not", content.split("{neq}")[1])
         if content.startswith("{gt}"):
