@@ -6,18 +6,20 @@ from fastapi import HTTPException
 from ..models import Subject, SubjectsIn, Subjects, SubjectsPatch, SubjectsOut, TypesOut, LessonsOut
 
 def filters(content):
-    if content.startswith("{neq}"):
-        return ("__not", content.split("{neq}")[1])
-    if content.startswith("{gt}"):
-        return ("__gt", content.split("{gt}")[1])
-    if content.startswith("{gteq}"):
-        return ("__gte", content.split("{gteq}")[1])
-    if content.startswith("{lt}"):
-        return ("__lt", content.split("{lt}")[1])
-    if content.startswith("{lteq}"):
-        return ("__lte", content.split("{lteq}")[1])
-    if content.startswith("{like}"):
-        return ("__contains", content.split("{like}")[1])
+    if content.startswith("{"):
+        if content.startswith("{neq}"):
+            return ("__not", content.split("{neq}")[1])
+        if content.startswith("{gt}"):
+            return ("__gt", content.split("{gt}")[1])
+        if content.startswith("{gteq}"):
+            return ("__gte", content.split("{gteq}")[1])
+        if content.startswith("{lt}"):
+            return ("__lt", content.split("{lt}")[1])
+        if content.startswith("{lteq}"):
+            return ("__lte", content.split("{lteq}")[1])
+        if content.startswith("{like}"):
+            return ("__contains", content.split("{like}")[1])
+        raise HTTPException(status_code=400, detail="Invalid filter")
     return ("", content)
 
 async def get_all_subjects(name : str | None = None,
