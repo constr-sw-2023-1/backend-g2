@@ -4,7 +4,7 @@ from fastapi import HTTPException
 from ..models import Lesson, LessonsIn, Lessons, LessonPatch
 
 def filters(content):
-    try:
+    if content.contains("{"):
         if content.startswith("{neq}"):
             return ("__not", content.split("{neq}")[1])
         if content.startswith("{gt}"):
@@ -17,9 +17,8 @@ def filters(content):
             return ("__lte", content.split("{lteq}")[1])
         if content.startswith("{like}"):
             return ("__contains", content.split("{like}")[1])
-        return ("", content)
-    except:
         raise HTTPException(status_code=400, detail="Invalid filter")
+    return ("", content)
 
 
 async def get_all_lessons(
